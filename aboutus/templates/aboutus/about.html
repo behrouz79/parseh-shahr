@@ -1,0 +1,27 @@
+{% extends 'shared/_MainLayout.html' %}
+{% load static %}
+
+{% block content %}
+	<!-- =========================== About Us =================================== -->
+			<section>
+				<div class="container">
+					<div class="row">
+
+						<div class="col-lg-5 col-md-6 col-sm-12">
+							<p>{{ about.text }}</p>
+							<a href="{% url 'contactus:contactus' %}" class="btn btn-theme mt-2">ارتباط با ما</a>
+						</div>
+
+						<div class="col-lg-6 col-md-6 col-sm-12 mr-auto">
+							<div class="about_video" >
+								<div class="thumb">
+									<img class="pro_img img-fluid w100" src="{{ about.image.url }}" alt="7.jpg">
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</section>
+			<!-- =========================== About Us =================================== -->
+{% endblock %}

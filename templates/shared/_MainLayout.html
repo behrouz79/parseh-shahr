@@ -1,0 +1,29 @@
+{% load  render_partial %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    {% include 'shared/_HeaderReferences.html' %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords" content=""/>
+</head>
+<body class="grocery-theme light">
+
+<div id="preloader">
+    <div class="preloader"><span></span><span></span></div>
+</div>
+<div id="main-wrapper">
+    {% render_partial 'header' %}
+    {% if messages %}
+        {% for message in messages %}
+            {% include 'shared/message.html' with message=message %}
+        {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+    {% render_partial 'footer' %}
+    {% include 'shared/_FooterReferences.html' %}
+</div>
+</body>
+</html>

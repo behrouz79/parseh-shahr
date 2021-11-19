@@ -1,0 +1,195 @@
+{% load static %}
+
+<!-- ============================ Call To Action ================================== -->
+<section class="theme-bg call_action_wrap-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="call_action_wrap">
+                    <div class="call_action_wrap-head">
+                        <h3>اشتراک در خبر نامه</h3>
+                        <span>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
+                    </div>
+                    <div class="newsletter_box">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="ایمیل خود را وارد کنید">
+                            <div class="input-group-append">
+                                <button class="btn search_btn" type="button"><i
+                                        class="fas fa-arrow-alt-circle-left"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ============================ Call To Action End ================================== -->
+
+<!-- ============================ Footer Start ================================== -->
+<footer class="dark-footer skin-dark-footer style-2">
+    <div class="before-footer">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-4 col-md-4">
+                    <div class="single_facts">
+                        <div class="facts_icon">
+                            <i class="ti-shopping-cart"></i>
+                        </div>
+                        <div class="facts_caption">
+                            <h4>ارسال رایگان</h4>
+                            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4">
+                    <div class="single_facts">
+                        <div class="facts_icon">
+                            <i class="ti-money"></i>
+                        </div>
+                        <div class="facts_caption">
+                            <h4>تضمین بازگشت هزینه</h4>
+                            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4">
+                    <div class="single_facts last">
+                        <div class="facts_icon">
+                            <i class="ti-headphone-alt"></i>
+                        </div>
+                        <div class="facts_caption">
+                            <h4>پشتیبانی آنلاین 24 ساعته</h4>
+                            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-middle">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-4 col-md-4">
+                    <div class="footer_widget">
+                        <h4 class="extream">تماس با ما</h4>
+                        <div class="address_infos">
+                            <ul>
+                                <li><i class="ti-home theme-cl"></i>{{ contact.location }}</li>
+                                <li><i class="ti-headphone-alt theme-cl"></i>{{ contact.phone }}</li>
+                                <li><i class="ti-mobile theme-cl"></i>{{ contact.smartphone }}</li>
+                                <li><i class="ti-email theme-cl"></i>{{ contact.email }}</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-2">
+                    <div class="footer_widget">
+                        <h4 class="widget_title">دسته بندی ها</h4>
+                        <ul class="footer-menu">
+                            {% for cat in categories %}
+                                {% if not cat.parent %}
+                                    <li>
+                                        <a href="{% url 'product:all_product' %}?category={{ cat.slug }}">{{ cat.title }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-2">
+                    <div class="footer_widget">
+                        <h4 class="widget_title">صفحات</h4>
+                        <ul class="footer-menu">
+                            <li><a href="{% url 'aboutus:aboutus' %}">درباره ما</a></li>
+                            <li><a href="{% url 'contactus:contactus' %}">تماس با ما</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row align-items-center">
+
+                <div class="col-lg-6 col-md-8">
+                    <p class="mb-0">تمامی حقوق مادی و معنوی این سایت متعلق به موبایل پارسه می باشد.</p>
+                </div>
+
+                <div class="col-lg-6 col-md-6 text-left">
+                    <ul class="footer_social_links">
+                        <li><a href="{{ contact.telegram }}"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="{{ contact.instagram }}"><i class="fab fa-telegram"></i></a></li>
+                        <li><a href="{{ contact.whatsapp }}"><i class="fab fa-whatsapp"></i></a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- ============================ Footer End ================================== -->
+
+<!-- cart -->
+<!-- Switcher Start -->
+<div class="w3-ch-sideBar w3-bar-block w3-card-2 w3-animate-right" style="display:none;left:0;" id="rightMenu">
+    <div class="rightMenu-scroll">
+        <h4 class="cart_heading">سبد خرید شما</h4>
+        <button onclick="closeRightMenu()" class="w3-bar-item w3-button w3-large"><i class="ti-close"></i></button>
+        <div class="right-ch-sideBar" id="side-scroll">
+            {% if request.user.orderuser %}
+                <div class="cart_select_items">
+                    {% for item in request.user.orderuser.orderdetailorder.all %}
+                        <!-- Single Item -->
+                        <div class="cart_selected_single">
+                            <div class="cart_selected_single_thumb">
+                                <a href="{{ item.get_absolute_url }}"><img
+                                        src="{{ item.product.image.url }}" class="img-fluid" alt=""/></a>
+                            </div>
+
+                            <div class="cart_selected_single_caption">
+                                <h4 class="product_title">{{ item.product.title }}</h4>
+                                <span class="numberof_item">{{ item.product.amount }}</span>
+                                <span class="numberof_item">{{ item.count }} عدد </span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="cart_subtotal">
+                    <h6>جمع کل<span class="theme-cl">{{ request.user.orderuser.get_total_price }} تومان</span></h6>
+                </div>
+                <div class="cart_subtotal">
+                    <h6>سود شما از این خرید<span
+                            class="theme-cl">{{ request.user.orderuser.get_total_discounted_price }} تومان</span></h6>
+                </div>
+                <div class="cart_action">
+                    <ul>
+                        <li><a href="{% url 'order:active' %}" class="btn btn-go-cart btn-theme">مشاهده / ویرایش /
+                            پرداخت</a></li>
+                    </ul>
+                </div>
+
+
+            {% else %}
+                <div class="cart_action">
+                    <a href="#" class="btn btn-go-cart btn-theme">سبد خرید شما خالی می یاشد.</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!-- cart -->

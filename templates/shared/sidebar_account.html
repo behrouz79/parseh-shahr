@@ -1,0 +1,20 @@
+<div class="col-lg-4 col-md-3">
+    <nav class="dashboard-nav mb-10 mb-md-0">
+        <div class="list-group list-group-sm list-group-strong list-group-flush-x">
+            <a class="list-group-item list-group-item-action dropright-toggle" href="{% url 'order:active' %}">
+                سفارش فعال
+            </a>
+            <a class="list-group-item list-group-item-action dropright-toggle"
+               href="{% url 'accounts:history' %}">
+                تاریخچه سفارشات
+            </a>
+            <a class="list-group-item list-group-item-action dropright-toggle"
+               href="{% url 'accounts:details' %}">
+                تنظیمات حساب
+            </a>
+            <a class="list-group-item list-group-item-action dropright-toggle" href="{% url 'accounts:logout' %}">
+                خروج
+            </a>
+        </div>
+    </nav>
+</div>

@@ -1,0 +1,25 @@
+{% extends 'shared/_MainLayout.html' %}
+{% load static %}
+
+{% block content %}
+<!-- =========================== Add To Cart =================================== -->
+			<section>
+				<div class="container">
+					<div class="row justify-content-center">
+						<div class="col-lg-10 col-md-12 col-sm-12">
+
+							<div class="card py-3 mt-sm-3">
+							  <div class="card-body text-center">
+								<h2 class="pb-2">بابت سفارش شما متشکرم!</h2>
+								<p class="font-size-sm mb-2">سفارش شما ثبت شده است و در اسرع وقت رسیدگی می شود.</p>
+								<p class="font-size-sm mb-2">حتماً شماره سفارش خود را یادداشت کنید <span class="font-weight-medium">{{ ref }}</span></p>
+							  </div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- =========================== Add To Cart =================================== -->
+
+{% endblock %}

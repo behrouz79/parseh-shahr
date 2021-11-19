@@ -1,0 +1,51 @@
+{% extends 'shared/_MainLayout.html' %}
+{% load static %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <!-- =========================== Account Settings =================================== -->
+    <section class="gray">
+        <div class="container">
+            <div class="row">
+                {% include 'shared/sidebar_account.html' %}
+                <div class="col-lg-8 col-md-9">
+                    <!-- Total Items -->
+                    <div class="card style-2">
+                        <div class="card-header">
+                            <h4 class="mb-0">جزئیات حساب</h4>
+                        </div>
+                        <div class="card-body">
+                            <form class="submit-page">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <!-- Email -->
+                                        <div class="form-group">
+                                            <label>نام کاربری</label>
+                                            <input class="form-control" type="text" disabled
+                                                   value="{{ request.user.username }}" required="">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <!-- Email -->
+                                        <div class="form-group">
+                                            <label> آدرس ایمیل</label>
+                                            <input class="form-control" type="email" disabled
+                                                   value="{{ request.user.email }}" required="">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- =========================== Account Settings =================================== -->
+
+{% endblock %}

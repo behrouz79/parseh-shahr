@@ -1,0 +1,228 @@
+{% extends 'shared/_MainLayout.html' %}
+{% load static %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block content %}
+    <!-- =========================== Product Detail =================================== -->
+    <section>
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="sp-loading"><img src="{{ object.image.url }}" alt=""><br>بارگیری تصاویر</div>
+                    <div class="sp-wrap">
+                        {% for image in object.gallory.all %}
+                            <a href="{{ image.url }}"><img src="{{ object.image.url }}" alt=""></a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="woo_pr_detail">
+
+                        <div class="woo_cats_wrps">
+                            {% for c in object.category.all %}
+                                <a href="{% url 'product:all_product' %}?category={{ c.slug }}"
+                                   class="woo_pr_cats">{{ c.title }}</a>
+                            {% endfor %}
+
+                        </div>
+                        <h2 class="woo_pr_title">{{ object.title }}</h2>
+                        <div class="woo_pr_short_desc">
+                            <p>{{ object.descripton }}</p>
+                        </div>
+
+                        <div class="woo_pr_price">
+                            <div class="woo_pr_offer_price">
+                                <h3>{{ object.collect_discounted }}تومان
+                                </h3>
+                            </div>
+                        </div>
+
+                        <!-- Short Info -->
+                        <div class="pr_info_prefix grocery_style mb-3">
+
+                            <!-- First -->
+                            <div class="cart_sku_preflix">
+                                <div class="sku_preflix_first">
+                                    <strong>موجودی محصول:</strong>
+                                </div>
+                                <div class="sku_preflix_last">
+                                    {{ product.stock }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="woo_btn_action">
+                            <form action="{% url 'order:add_order' product.id %}" method="post">
+                                {% csrf_token %}
+                                <div class="col-12 col-lg-auto">
+                                    <button type="submit" class="btn btn-block btn-dark mb-2">افزودن به سبد خرید <i
+                                            class="ti-shopping-cart-full mr-2"></i></button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Product Description -->
+            <div class="row mt-5">
+                <div class="col-lg-12 col-md-12">
+                    <div class="custom-tab style-1">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description"
+                                   role="tab" aria-controls="description" aria-selected="true" aria-expanded="true">توضیحات</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="reviews-tab" data-toggle="tab" href="#reviews" role="tab"
+                                   aria-controls="reviews" aria-selected="false" aria-expanded="false">بررسی ها</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade active show" id="description" role="tabpanel"
+                                 aria-labelledby="description-tab" aria-expanded="true">
+                                <p>{{ object.description }}</p>
+                            </div>
+                            <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab"
+                                 aria-expanded="false">
+                                <div class="review-wrapper">
+                                    <div class="review-wrapper-header">
+                                        <h4>{{ object.get_active_comment|length }} نظر</h4>
+                                    </div>
+                                    <div class="review-wrapper-body">
+                                        <ul class="review-list">
+                                            {% for comment in object.get_active_comment %}
+                                                <li>
+                                                    <div class="reviews-box">
+                                                        <div class="review-body">
+                                                            <div class="review-avatar">
+                                                                <img alt="" src="{% static 'home/img/no_image.jpg' %}"
+                                                                     class="avatar avatar-140 photo">
+                                                            </div>
+                                                            <div class="review-content">
+                                                                <div class="review-info">
+                                                                    <div class="review-comment">
+                                                                        <div class="review-author">
+                                                                            {{ comment.user }}
+                                                                        </div>
+                                                                        {% if request.user == comment.user %}
+                                                                            <form action="{% url 'product:remove' %}"
+                                                                                  method="post">
+                                                                                {% csrf_token %}
+                                                                                <input type="hidden" name="id"
+                                                                                       value="{{ comment.id }}">
+                                                                                <button type="submit" class="btn-red">
+                                                                                    <p>حذف</p>
+                                                                                </button>
+                                                                            </form>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                    <div class="review-comment-date">
+                                                                        <div class="review-date">
+                                                                            <span>{{ comment.date|timesince }}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <p style="margin-top: 10px;">{{ comment.text }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="review-wrapper">
+                                    <div class="review-wrapper-header">
+                                        <h4>ارزیابی و نوشتن نظرات</h4>
+                                    </div>
+                                    <div class="review-wrapper-body">
+                                        <div class="row">
+                                            <form action="" method="post"
+                                                  class="col-sm-12 form-group">
+                                                {% csrf_token %}
+                                                <div class="col-sm-12 form-group">
+                                                    {{ form.text }}
+                                                    {{ form.text.errors }}
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <button type="submit" class="btn btn-primary">ارسال نظرات</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- =========================== Product Detail =================================== -->
+
+    <!-- =========================== Related Products =================================== -->
+    <section class="gray">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12 mb-2">
+                    <h4 class="mb-0">محصولات پر فروش</h4>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-lg-12 col-md-12">
+                    <div class="owl-carousel products-slider owl-theme">
+
+                        {% for item in most_sell %}
+                            <!-- Single Item -->
+                            <div class="item">
+                                <div class="woo_product_grid">
+                                    <div class="woo_product_thumb">
+                                        <img src="{{ item.target.image.url }}" class="img-fluid" alt=""/>
+                                    </div>
+                                    <div class="woo_product_caption center">
+                                        <div class="woo_title">
+                                            <h4 class="woo_pro_title"><a
+                                                    href="{% url 'details' item.target.id item.target.slug %}">{{ item.target.title }}</a>
+                                            </h4>
+                                        </div>
+                                        <div class="woo_price">
+                                            <h6>{{ item.target.amount }}تومان
+                                            </h6>
+                                        </div>
+                                    </div>
+                                    <div class="woo_product_cart hover">
+                                        <ul>
+                                            <li><a href="{{ item.target.get_absolute_url }}"
+                                                   class="woo_cart_btn btn_cart"><i
+                                                    class="ti-eye"></i></a></li>
+                                            <li>
+                                                <form action="{% url 'order:add_order' item.target.id %}" method="post"
+                                                      class="woo_cart_btn btn_view">
+                                                    {% csrf_token %}
+                                                    <button class="ti-shopping-cart woo_cart_btn btn_view"></button>
+                                                    <input type="hidden" name="number" value="1">
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- =========================== Related Products =================================== -->
+{% endblock %}

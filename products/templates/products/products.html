@@ -1,0 +1,127 @@
+{% extends 'shared/_MainLayout.html' %}
+{% load static %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block content %}
+    <!-- =========================== Search Products =================================== -->
+    <section>
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <div class="filter_search_opt">
+                        <a href="javascript:void(0);" onclick="openFilterSearch()"><i class="ti-reload"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Single Product -->
+                <div class="col-lg-4 col-md-12">
+                    <div class="search-sidebar sm-sidebar" id="filter_search" style="right:0;">
+                        <div class="search-sidebar_header">
+                            <h4 class="ssh_heading">بستن فیلتر</h4>
+                            <button onclick="closeFilterSearch()" class="w3-bar-item w3-button w3-large"><i
+                                    class="ti-close"></i></button>
+                        </div>
+                        <div class="search-sidebar-body">
+
+                            <!-- Single Option -->
+                            <div class="single_search_boxed">
+                                <div class="widget-boxed-header">
+                                    <h4 class="mr-4 mt-4">دسته بندی ها</h4>
+                                </div>
+                                <div class="widget-boxed-body">
+                                    <div class="side-list no-border">
+                                        <div class="filter-card" id="shop-categories">
+                                            {% for category in categories %}
+                                                <div class="single_filter_card">
+                                                    {% if not category.parent %}
+                                                        <h5>
+                                                            <a href="{% url 'product:all_product' %}?category={{ category.slug }}"
+                                                               data-toggle="collapse" class="collapsed"
+                                                               aria-expanded="false"
+                                                               role="button">{{ category.title }}</a>
+                                                        </h5>
+                                                    {% endif %}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <a href="{% url 'contactus:contactus' %}">
+                            <img src="{% static 'home/img/banner.jpg' %}" class="img-fluid rounded" alt=""/>
+                            <div class="woo_product_caption center">
+                                <h5>برای ارسال درخواست تعمیرات کلیک کنید</h5>
+                            </div>
+                        </a>
+                    </div>
+
+
+                </div>
+
+                <div class="col-lg-8 col-md-12">
+
+                    <!-- Row -->
+                    <div class="row">
+                        {% for product in object_list %}
+                            <div class="col-lg-4 col-md-4 col-sm-6">
+                                <div class="woo_product_grid">
+                                    {% if product.discounted > 0 %}
+                                        <span class="woo_pr_tag hot">ویژه</span>
+                                    {% endif %}
+                                    <div class="woo_product_thumb">
+                                        <img src="{{ product.image.url }}" width="200px" height="200px" class="img-fluid" alt="product_image"/>
+                                    </div>
+                                    <div class="woo_product_caption center">
+                                        <div class="woo_title">
+                                            <h4 class="woo_pro_title"><a
+                                                    href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+                                            </h4>
+                                        </div>
+                                        <div class="woo_price">
+                                            <h6>
+                                                {% if product.discounted > 0 %}
+                                                    {{ product.collect_discounted }} تومان
+                                                    <span class="less_price">{{ product.amount }} تومان</span>
+                                                {% else %}
+                                                    {{ product.amount }}  تومان
+                                                {% endif %}
+                                            </h6>
+                                        </div>
+                                    </div>
+                                    <div class="woo_product_cart hover">
+                                        <ul>
+                                            <li><a href="{{ product.get_absolute_url }}"
+                                                   class="woo_cart_btn btn_cart"><i
+                                                    class="ti-eye"></i></a></li>
+                                            <li>
+                                                <form action="{% url 'order:add_order' product.id %}" method="post"
+                                                      class="woo_cart_btn btn_view">
+                                                    {% csrf_token %}
+                                                    <button class="ti-shopping-cart woo_cart_btn btn_view"></button>
+                                                    <input type="hidden" name="number" value="1">
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <!-- Row -->
+
+                    {% include 'shared/paginator.html' with states=state paginator=paginator %}
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- =========================== Search Products =================================== -->
+
+{% endblock %}

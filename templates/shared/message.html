@@ -1,0 +1,23 @@
+{% if messages %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {% for message in messages %}
+        <p id="message" style="display: none">{{ message }}</p>
+        <p id="tag" style="display: none">{{ message.tags }}</p>
+        <script>
+            const m = document.getElementById('message').innerHTML;
+            const t = document.getElementById('tag').innerHTML;
+            console.log(t);
+            Swal.fire(
+                '',
+                m,
+                t
+            ).then(() => {
+                    document.getElementById('message').remove();
+                    document.getElementById('tag').remove();
+                }
+            )
+
+        </script>
+    {% endfor %}
+{% endif %}

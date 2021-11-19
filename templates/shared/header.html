@@ -1,0 +1,215 @@
+{% load static %}
+
+<!-- ============================================================== -->
+<!-- Top header  -->
+<!-- ============================================================== -->
+<!-- Start Navigation -->
+<div class="header">
+
+    <div class="header_topbar dark">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-6 col-md-6 col-sm-6 col-4">
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-8">
+                    <div class="topbar_menu">
+                        <ul>
+
+                            {% if request.user.is_authenticated %}
+                                <li><a href="{% url 'accounts:details' %}"><i class="ti-bag"></i>حساب
+                                    کاربری {{ user.username }}</a></li>
+                                <li><a href="{% url 'accounts:logout' %}"><i class="ti-shift-right"></i>خروج</a></li>
+                            {% else %}
+                                <li><a href="{% url 'accounts:login-signup' %}"><i class="ti-bag"></i>ورود/ثبت نام</a></li>
+                            {% endif %}
+                            <li class="hide-m">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Main header -->
+    <div class="main_header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-2 col-md-2 col-sm-3 col-4">
+                    <a class="nav-brand" href="{% url 'product:all_product' %}">
+                        <img src="{% static 'home/img/download.jpg' %}" class="logo" alt=""/>
+                    </a>
+                </div>
+                <div class="col-lg-10 col-md-10 col-sm-9 col-8">
+                    <!-- Show on Mobile & iPad -->
+                    <div class="blocks shop_cart d-xl-none d-lg-none">
+                        <div class="single_shop_cart">
+                            <div class="ss_cart_left">
+                                <a class="cart_box" data-toggle="collapse" href="#mySearch" role="button"
+                                   aria-expanded="false" aria-controls="mySearch"><i class="ti-search"></i></a>
+                            </div>
+                        </div>
+                        <div class="single_shop_cart">
+                            <div class="ss_cart_left">
+                                <a href="#" onclick="openRightMenu()" class="cart_box"><span
+                                        class="qut_counter">{{ request.user.orderuser.get_count }}</span><i
+                                        class="ti-shopping-cart"></i></a>
+                            </div>
+                            <div class="ss_cart_content">
+                                <strong>سبد خرید من</strong>
+                                <span>{{ request.user.order.get_total_price }} تومان</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Show on Desktop -->
+                    <div class="blocks shop_cart d-none d-xl-block d-lg-block">
+                        <div class="single_shop_cart">
+                            <div class="ss_cart_left">
+                                <a href="javascript:void(0)" class="cart_box"><i class="lni lni-phone"></i></a>
+                            </div>
+                            <div class="ss_cart_content">
+                                <strong>شماره تماس:</strong>
+                                <span>{{ contact.phone }}</span>
+                            </div>
+                        </div>
+                        <div class="single_shop_cart">
+                            <div class="ss_cart_left">
+                                <a href="#" onclick="openRightMenu()" class="cart_box"><span
+                                        class="qut_counter">{{ request.user.orderuser.get_count }}</span><i
+                                        class="ti-shopping-cart"></i></a>
+                            </div>
+                            <div class="ss_cart_content">
+                                <strong>سبد خرید من</strong>
+                                <span>{{ request.user.orderuser.get_total_price }} تومان</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form action="{% url 'product:all_product' %}">
+                        <div class="blocks search_blocks d-none d-xl-block d-lg-block">
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control"
+                                       placeholder="جستجو در فروشگاه ...">
+                                <div class="input-group-append">
+                                    <button class="btn search_btn" type="submit"><i class="ti-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <form action="{% url 'product:all_product' %}" method="get">
+            {% csrf_token %}
+            <div class="collapse" id="mySearch">
+                <div class="blocks search_blocks">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="جستجو در فروشگاه ...">
+                        <div class="input-group-append">
+                            <button class="btn search_btn" type="button"><i class="ti-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="header_nav">
+        <div class="container">
+            <div class="row align-item-center">
+                <div class="col-lg-3 col-md-4 col-sm-8 col-10">
+                    <!-- For Desktop -->
+                    <div class="shopby_categories d-none d-xl-block d-lg-block">
+                        <a class="shop_category" data-toggle="collapse" href="#myCategories" role="button"
+                           aria-expanded="false" aria-controls="myCategories">موبایل پارسه شهر</a>
+                    </div>
+
+                    <!-- For Mobile -->
+                    <div class="shopby_categories d-xl-none d-lg-none">
+                        <a class="shop_category" href="javascript:void(0);" onclick="openLeftMenu()">موبایل پارسه
+                            شهر</a>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-9 col-md-8 col-sm-4 col-2">
+                    <nav id="navigation" class="navigation navigation-landscape">
+                        <div class="nav-header">
+                            <div class="nav-toggle"></div>
+                        </div>
+                        <div class="nav-menus-wrapper" style="transition-property: none;">
+                            <ul class="nav-menu">
+
+                                <li class="active"><a href="#">خانه<span class="submenu-indicator"></span></a>
+                                </li>
+
+                                <li><a href="#">دسته بندی<span class="submenu-indicator"></span></a>
+                                    <ul class="nav-dropdown nav-submenu">
+                                        {% for category in categories %}
+                                            {% if not category.parent %}
+                                                <li>
+                                                    <a href="{% url 'product:all_product' %}?category={{ category.slug }}">{{ category.title }}<span
+                                                            class="submenu-indicator"></span></a>
+                                                </li>
+                                            {% endif %}
+                                            {% if category.child.all %}
+                                                <ul class="nav-dropdown nav-submenu">
+                                                    {% for subcategory in category.child.all %}
+                                                        <li>
+                                                            <a href="{% url 'product:all_product' %}?category={{ subcategory.slug }}">{{ subcategory.title }}</a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
+
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+
+                                <li><a href="{% url 'aboutus:aboutus' %}">درباره ما<span class="submenu-indicator"></span></a>
+                                </li>
+
+                                <li><a href="{% url 'contactus:contactus' %}">تماس با ما<span class="submenu-indicator"></span></a>
+                                </li>
+
+                            </ul>
+
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!-- End Navigation -->
+<div class="clearfix"></div>
+<!-- ============================================================== -->
+<!-- Top header  -->
+<!-- ============================================================== -->
+
+<!-- =========================== Breadcrumbs =================================== -->
+<div class="breadcrumbs_wrap dark">
+    <div class="container">
+        <div class="row align-items-center">
+
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="text-center">
+                    <h2 class="breadcrumbs_title">{{ head }}</h2>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#"><i class="ti-home"></i></a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ head }}</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- =========================== Breadcrumbs =================================== -->

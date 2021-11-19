@@ -1,0 +1,222 @@
+{% extends 'shared/_MainLayout.html' %}
+{% load static %}
+{% load poll_extras %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block content %}
+    <!-- =========================== My Order =================================== -->
+    <section class="gray">
+        <div class="container">
+            <div class="row">
+
+                {% include 'shared/sidebar_account.html' %}
+                {% with request.user.orderuser as order %}
+                    {% if order %}
+
+                        <div class="col-lg-8 col-md-9">
+                            <div class="card style-2 mb-4 btn btn-primary">
+                                <strong><b>سبد خرید فعال شما هر شب ساعت 00:00 حذف می شود.</b></strong>
+                            </div>
+                            <div class="card-body bg-white mb-4">
+                                <div class="row">
+                                    <div class="col-6 col-lg-3">
+                                        <!-- Heading -->
+                                        <h6 class="text-muted mb-1">شماره سفارش:</h6>
+                                        <!-- Text -->
+                                        <p class="mb-lg-0 font-size-sm font-weight-bold">{{ order.id }}</p>
+                                    </div>
+
+                                    <div class="col-6 col-lg-3">
+                                        <!-- Heading -->
+                                        <h6 class="text-muted mb-1">زمان ارسال:</h6>
+                                        <!-- Text -->
+                                        <p class="mb-lg-0 font-size-sm font-weight-bold">
+                                            <span>یک روز</span>
+                                        </p>
+                                    </div>
+
+                                    <div class="col-6 col-lg-3">
+                                        <!-- Heading -->
+                                        <h6 class="text-muted mb-1">وضعیت:</h6>
+                                        <!-- Text -->
+                                        <p class="mb-0 font-size-sm font-weight-bold">در انتظار پرداخت</p>
+                                    </div>
+
+                                    <div class="col-6 col-lg-3">
+                                        <!-- Heading -->
+                                        <h6 class="text-muted mb-1">هزینه سفارش:</h6>
+                                        <!-- Text -->
+                                        <p class="mb-0 font-size-sm font-weight-bold">{{ order.get_total_price }} تومان</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">محصول</th>
+                                            <th scope="col">قیمت</th>
+                                            <th scope="col">تعداد</th>
+                                            <th scope="col">جمع</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for item in order.orderdetailorder.all %}
+                                            <tr>
+                                                <td>
+                                                    <div class="tbl_cart_product">
+                                                        <div class="tbl_cart_product_thumb">
+                                                            <a href="{{ item.get_absolute_url }}"><img
+                                                                    src="{{ item.product.image.url }}" class="img-fluid"
+                                                                    alt=""></a>
+                                                        </div>
+                                                        <div class="tbl_cart_product_caption">
+                                                            <h5 class="tbl_pr_title">{{ item.product.title }}</h5>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td><h4 class="tbl_org_price">{{ item.product.amount }} تومان</h4></td>
+
+                                                <td>
+                                                    <div>
+                                                        <a href="{% url 'order:minus_order' item.product.id %}">
+                                                            <button class="btn btn-circle btn-success">-</button>
+                                                        </a>
+                                                        <button class="btn btn-circle btn-danger-light">{{ item.count }}</button>
+                                                        <a href="{% url 'order:plus_order' item.product.id %}">
+                                                            <button class="btn btn-circle btn-success">+</button>
+                                                        </a>
+                                                    </div>
+
+                                                <td>
+                                                    <div class="tbl_pr_action">
+                                                        <h5 class="tbl_total_price">{{ item.product.amount|multi:item.count }}
+                                                            تومان</h5>
+                                                        <a href="{% url 'order:remove_order' item.product.id %}"
+                                                           class="tbl_remove"><i
+                                                                class="ti-close"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                            <!-- Total Items -->
+                            <div class="card style-2 mb-4">
+                                <div class="card-header">
+                                    <h4 class="mb-0">سفارش کل</h4>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
+                                        <li class="list-group-item d-flex">
+                                            <span>جمع کل</span>
+                                            <span class="mr-auto">{{ order.get_total_price }} تومان</span>
+                                        </li>
+                                        <li class="list-group-item d-flex">
+                                            <span>سود شما از این خرید</span>
+                                            <span class="mr-auto">{{ order.get_total_discounted_price }} تومان</span>
+                                        </li>
+                                        <li class="list-group-item d-flex">
+                                            <span>ارسال</span>
+                                            <span class="mr-auto">رایگان</span>
+                                        </li>
+
+                                        <li class="list-group-item d-flex font-size-lg font-weight-bold">
+                                            <span>جمع</span>
+                                            <span class="mr-auto">{{ order.get_total_price }} تومان</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            {% if order.get_total_price < 50000 %}
+                                <div class="card style-2 mb-4 btn btn-info">
+                                    <strong><b>حداقل مبلغ خرید 50 هزار تومان می باشد.</b></strong>
+                                </div>
+                            {% else %}
+                                <div class="card style-2 mb-4 btn btn-black">
+                                    <strong><b>آدرس جهت ارسال</b></strong>
+                                </div>
+                                <!-- =========================== Contact Us =================================== -->
+                                <section class="gray" style="padding: 0px;">
+                                    <div class="container">
+
+                                        <div class="row mt-auto align-items-center">
+
+                                            <div class="col-lg-5 col-md-12 hide-91">
+                                                <img src="assets/img/preet-o.png" class="img-fluid rounded" alt=""/>
+                                            </div>
+
+                                            <div class="col-lg-12 col-md-12">
+                                                <div class="contact-form">
+                                                    <form action="" method="post">
+                                                        {% csrf_token %}
+
+                                                        <div class="form-row">
+
+                                                            <div class="form-group col-md-12">
+                                                                <label>نام کامل</label>
+                                                                <input type="text" required name="name"
+                                                                       class="form-control"
+                                                                       placeholder="نام کامل">
+                                                            </div>
+
+                                                            <div class="form-group col-md-12">
+                                                                <label>شماره موبایل</label>
+                                                                <input type="text" required name="number"
+                                                                       class="form-control"
+                                                                       placeholder="شماره موبایل">
+                                                            </div>
+                                                            <div class="form-group col-md-12">
+                                                                <label>استان</label>
+                                                                <input type="text" required name="ostan"
+                                                                       class="form-control"
+                                                                       placeholder="استان">
+                                                            </div>
+                                                            <div class="form-group col-md-12">
+                                                                <label>شهرستان</label>
+                                                                <input type="text" required name="city"
+                                                                       class="form-control"
+                                                                       placeholder="شهرستان">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group col-lg-12 col-md-12">
+                                                            <label>آدرس کامل</label>
+                                                            <textarea class="form-control" required name="fulladdress"
+                                                                      placeholder="آدرس کامل شما"></textarea>
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </section>
+                                <!-- =========================== Contact Us =================================== -->
+
+                                <div class="card style-2 mb-4 btn btn-success">
+                                    <a href=""><strong><b>پرداخت</b></strong></a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="card style-2 mb-4 btn btn-info">
+                            <strong><b>سبد خرید فعالی برای شما وجود ندارد.</b></strong>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </section>
+    <!-- =========================== My Order =================================== -->
+{% endblock %}

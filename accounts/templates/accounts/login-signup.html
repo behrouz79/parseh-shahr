@@ -1,0 +1,114 @@
+{% extends 'shared/_MainLayout.html' %}
+{% load static %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+
+    <!-- =========================== Login/Signup =================================== -->
+    <section>
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="login_signup">
+                        <h3 class="login_sec_title">ورود</h3>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="{{ login_form.username.id_for_label }}">آدرس ایمیل</label>
+                                {{ login_form.username }}
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ login_form.password.id_for_label }}">کلمه عبور</label>
+                                {{ login_form.password }}
+                            </div>
+                            {{ login_form.non_field_errors }}
+                            <div class="login_flex">
+                                <div class="login_flex_1">
+                                    <a href="#" class="text-bold">فراموشی کلمه عبور؟</a>
+                                </div>
+                                <div class="login_flex_2">
+                                    <div class="form-group mb-0">
+                                        <button type="submit" class="btn btn-md btn-theme">ورود</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="login_signup">
+                        <h3 class="login_sec_title">ایجاد حساب کاربری</h3>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        <label for="{{ register_form.username.id_for_label }}">نام کاربری</label>
+                                        {{ register_form.username }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="form-group">
+                                        <label for="{{ register_form.email.id_for_label }}">آدرس ایمیل</label>
+                                        {{ register_form.email }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ register_form.password1.id_for_label }}">کلمه عبور</label>
+                                        {{ register_form.password1 }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ register_form.password2.id_for_label }}">تکرار کلمه عبور</label>
+                                        {{ register_form.password2 }}
+                                    </div>
+                                </div>
+                                {{ register_form.non_field_errors }}
+                                <div class="col-lg-12 col-md-12">
+                                    <div class="login_flex">
+                                        <div class="login_flex_2">
+                                            <div class="form-group mb-0">
+                                                <button type="submit" class="btn btn-md btn-theme">ثبت نام</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- =========================== Login/Signup =================================== -->
+<!-- password-script -->
+	<script>
+		window.onload = function () {
+			document.getElementById("password1").onchange = validatePassword;
+			document.getElementById("password2").onchange = validatePassword;
+		}
+
+		function validatePassword() {
+			var pass2 = document.getElementById("password2").value;
+			var pass1 = document.getElementById("password1").value;
+			if (pass1 != pass2)
+				document.getElementById("password2").setCustomValidity("Passwords Don't Match");
+			else
+				document.getElementById("password2").setCustomValidity('');
+			//empty string means no validation error
+		}
+	</script>
+    <script>
+    var e = "{{ err }}";
+        if(e != ""){
+            alert(e);
+        }
+    </script>
+	<!-- //password-script -->
+{% endblock %}
+

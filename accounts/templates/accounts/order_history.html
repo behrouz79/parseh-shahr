@@ -1,0 +1,68 @@
+{% extends 'shared/_MainLayout.html' %}
+{% load static %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block content %}
+
+    <!-- =========================== My All Orders =================================== -->
+    <section class="gray">
+        <div class="container">
+            <div class="row">
+
+                {% include 'shared/sidebar_account.html' %}
+
+                <div class="col-lg-8 col-md-9">
+
+                    <!-- Order Items -->
+                   {% if oldorder %}
+                    <div class="card style-2">
+                        <div class="card-header">
+                            <h4 class="mb-0">کل سفارش</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">شماره سفارش</th>
+                                        <th scope="col">تاریخ پرداخت</th>
+                                        <th scope="col">قیمت</th>
+                                        <th scope="col">وضعیت</th>
+                                        <th scope="col">شماره پیگیری</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for item in oldorder %}
+                                        <tr>
+                                            <td>{{ item.id }}</td>
+                                            <td>{{ item.payment_date }}</td>
+                                            <td>{{ item.price }} تومان</td>
+                                            {% if item.down %}
+                                                <td>تحویل داده شده</td>
+                                            {% else %}
+                                                <td>در انتظار تحویل</td>
+                                            {% endif %}
+                                            <td>{{ item.refid }}</td>
+                                        </tr>
+                                    {% endfor %}
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                       {% else %}
+                       <div class="btn btn-info">سفارشی ندارید</div>
+                   {% endif %}
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- =========================== My All Orders =================================== -->
+
+
+{% endblock %}
